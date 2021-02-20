@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\OwnerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,4 +36,12 @@ Route::get('products', function() {
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('/approve/{id}', [AdminController::class, 'approve']);
+});
+
+Route::group(['middleware' => ['auth', 'role:owner']], function () {
+    Route::get('/orders', [OwnerController::class, 'orders'])->name('orders');
+    Route::get('/products', [OwnerController::class, 'products'])->name('products');
+    Route::get('/product/{id}', [OwnerController::class, 'show']);
+    Route::post('/product', [OwnerController::class, 'store']);
+    Route::delete('/product/{id}', [OwnerController::class, 'destroy']);
 });

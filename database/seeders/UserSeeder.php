@@ -23,6 +23,8 @@ class UserSeeder extends Seeder
         ]);
 
         Role::create(['name' => 'admin']);
+        Role::create(['name' => 'customer']);
+        Role::create(['name' => 'owner']);
         $user->assignRole('admin');
     }
 }

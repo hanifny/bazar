@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,12 +31,15 @@ require __DIR__.'/auth.php';
 
 Route::post('sign-in', LoginController::class)->name('sign-in');
 
-Route::get('products', function() {
-    return 'OK';
-})->middleware(['auth', 'role:customer'])->name('dashboard');
-
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('/approve/{id}', [AdminController::class, 'approve']);
+});
+
+Route::group(['middleware' => ['auth', 'role:customer']], function () {
+    Route::get('/buy', [CustomerController::class, 'index'])->name('buy');
+    Route::get('/search', [CustomerController::class, 'search']);
+    Route::post('/buy', [CustomerController::class, 'buy']);
+    Route::get('/riwayat', [CustomerController::class, 'riwayat'])->name('riwayat');
 });
 
 Route::group(['middleware' => ['auth', 'role:owner']], function () {

@@ -28,6 +28,15 @@
                         {{ __('Products') }}
                     </x-nav-link>
                 </div>
+                @elseif(auth()->user()->hasRole('customer'))
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('buy')" :active="request()->routeIs('buy')">
+                        {{ __('Beli Produk') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('riwayat')" :active="request()->routeIs('riwayat')">
+                        {{ __('Riwayat') }}
+                    </x-nav-link>
+                </div>
                 @endif
             </div>
 
@@ -50,9 +59,15 @@
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
+                            @if(auth()->user()->hasRole('owner'))
                             <x-dropdown-link class="font-weight-bold">
                                 {{ __('Owner Account') }}
                             </x-dropdown-link><hr class="m-0">
+                            @elseif(auth()->user()->hasRole('admin'))
+                            <x-dropdown-link class="font-weight-bold">
+                                {{ __('Admin Account') }}
+                            </x-dropdown-link><hr class="m-0">
+                            @endif
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">

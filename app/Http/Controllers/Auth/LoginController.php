@@ -25,7 +25,7 @@ class LoginController extends Controller
             } elseif(auth()->user()->hasRole('owner')) {
                 return redirect('/owner');
             } else {
-                return redirect('/products');
+                return redirect('/buy');
             }  
         }
 

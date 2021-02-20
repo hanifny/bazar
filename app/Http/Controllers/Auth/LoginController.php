@@ -23,7 +23,7 @@ class LoginController extends Controller
             if(auth()->user()->hasRole('admin')) {
                 return redirect('/dashboard');
             } elseif(auth()->user()->hasRole('owner')) {
-                return redirect('/owner');
+                return redirect('/orders');
             } else {
                 return redirect('/buy');
             }  

@@ -13,7 +13,7 @@ class CustomerController extends Controller
     protected function index() {
         $products = Product::with('owner')->paginate(16);
 
-        return view('buy', compact('products'));
+        return view('customer.buy', compact('products'));
     }
 
     protected function buy(Request $request) {
@@ -25,12 +25,12 @@ class CustomerController extends Controller
     protected function riwayat() {
         $riwayat = User::with('orders.product')->find(Auth::user()->id);
         
-        return view('riwayat', compact('riwayat'));
+        return view('customer.history', compact('riwayat'));
     }
 
     protected function search(Request $request) {
         $products = Product::with('owner')->where('name', 'like', '%' . $request->text . '%' )->paginate(16);
 
-        return view('load', compact('products'))->render();
+        return view('customer.load', compact('products'))->render();
     }
 }

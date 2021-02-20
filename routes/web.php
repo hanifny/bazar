@@ -19,13 +19,19 @@ use App\Http\Controllers\CustomerController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
 });
 
 Route::get('/dashboard', function () {
-    $needApprovalUsers = User::doesntHave('roles')->get();
-    return view('dashboard', compact('needApprovalUsers'));
-})->middleware(['auth', 'role:admin'])->name('dashboard');
+    if(auth()->user()->hasRole('admin')) {
+        $needApprovalUsers = User::doesntHave('roles')->get();
+        return view('admin.dashboard', compact('needApprovalUsers'));
+    } elseif(auth()->user()->hasRole('customer')) {
+        return redirect('/buy');
+    } elseif(auth()->user()->hasRole('owner')) {
+        return redirect('/orders');
+    }
+})->name('dashboard');
 
 require __DIR__.'/auth.php';
 

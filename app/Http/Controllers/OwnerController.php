@@ -2,21 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\Product;
+use App\Models\Order;
 
 class OwnerController extends Controller
 {
+    protected function userId() {
+        return Auth::user()->id;
+    } 
+    
     protected function orders() {
-        return view('orders');
+        $products = Order::with('product')->get();
+        
+        $orders = [];
+
+        foreach ($products as $val) {
+            if($val->product->owner_id == $this->userId()) {
+                array_push($orders, $val);
+            }
+        }
+
+        return view('owner.orders', compact('orders'));
     }
 
     protected function products() {
-        $products = Product::where('owner_id', Auth::user()->id)->get();
-        $count = Product::count();
-        return view('products', compact('products', 'count'));
+        $products = Product::where('owner_id', $this->userId())->get();
+        $count = Product::where('owner_id', $this->userId())->count();
+        return view('owner.products', compact('products', 'count'));
     }
 
     protected function store(Request $request) {    
@@ -28,7 +43,7 @@ class OwnerController extends Controller
             toast('Berhasil mengedit produk', 'success');
         } else {
             $id = $request->id;
-            $ownerId = Auth::user()->id;
+            $ownerId = $this->userId();
             $file = $request->file('photo'); // menyimpan data file yang diupload ke variabel $file
             $photo = $ownerId.'-'.time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path().'/images/products/', $photo);

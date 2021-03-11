@@ -1,4 +1,5 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white {{auth()->user() ? 'border-b border-gray-100' : ''}}">
+    @if(auth()->user())
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -20,12 +21,12 @@
                 @elseif(auth()->user()->hasRole('owner'))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('orders')" :active="request()->routeIs('orders')">
-                        {{ __('Orders') }}
+                        {{ __('Pesanan') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('products')" :active="request()->routeIs('products')">
-                        {{ __('Products') }}
+                        {{ __('Produk') }}
                     </x-nav-link>
                 </div>
                 @elseif(auth()->user()->hasRole('customer'))
@@ -33,7 +34,10 @@
                     <x-nav-link :href="route('buy')" :active="request()->routeIs('buy')">
                         {{ __('Beli Produk') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('riwayat')" :active="request()->routeIs('riwayat')">
+                    <x-nav-link :href="route('cart')" :active="request()->routeIs('cart')">
+                        {{ __('Keranjang') }} <span class="badge badge-pill badge-primary ml-1"><small>  {{\App\Models\Order::where(['customer_id' => auth()->user()->id, 'in_cart' => 1])->count()}} </small></span>
+                    </x-nav-link>
+                    <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
                         {{ __('Riwayat') }}
                     </x-nav-link>
                 </div>
@@ -61,17 +65,17 @@
                             @csrf
                             @if(auth()->user()->hasRole('owner'))
                             <x-dropdown-link class="font-weight-bold">
-                                {{ __('Owner Account') }}
+                                {{ __('Akun Pemilik Usaha') }}
                             </x-dropdown-link><hr class="m-0">
                             @elseif(auth()->user()->hasRole('admin'))
                             <x-dropdown-link class="font-weight-bold">
-                                {{ __('Admin Account') }}
+                                {{ __('Akun Admin') }}
                             </x-dropdown-link><hr class="m-0">
                             @endif
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Logout') }}
+                                {{ __('Keluar') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -99,7 +103,7 @@
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
+        <div class="pt-4 pb-1 {{auth()->user() ? 'border-t border-gray-100' : ''}}">
             <div class="flex items-center px-4">
                 <div class="flex-shrink-0">
                     <svg class="h-10 w-10 fill-current text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -127,4 +131,18 @@
             </div>
         </div>
     </div>
+    @else
+    <div class="d-flex justify-content-between bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center pt-2">
+            <a href="{{ route('dashboard') }}">
+                <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+            </a> 
+        </div>
+        <span>
+            <a class="bg-info p-1 rounded text-white" href="/login">Login</a>
+            <a class="bg-info p-1 rounded text-white" href="/register">Register</a>
+        </span>
+    </div>
+    @endif
 </nav>

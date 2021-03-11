@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="d-flex align-items-center justify-content-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-0">
-                {{ __('Beli Produk') }}
+                {{ __('Selamat Datang di "Bazar Online Persari 2021"') }}
             </h2>
             <div class="d-flex">
                 <input type="text" class="form-control mr-2" autofocus id="searchText">
@@ -15,7 +15,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200 products">
-                    @include('load')
+                    @include('customer.load')
                 </div>
             </div>
         </div>
@@ -32,20 +32,25 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/buy" method="POST" class="form-inline">
+                    @if(auth()->user())
+                    <form action="/cart" method="POST" class="form-inline">
                         @csrf
                         <input type="hidden" name="product_id" id="product_id">
-                        <input type="hidden" name="customer_id" id="customer_id" value="{{auth()->user()->id}}">
+                        <input type="hidden" name="in_cart" id="in_cart" value="1">
+                        <input type="hidden" name="customer_id" id="customer_id" value="{{auth()->user() ? auth()->user()->id : ''}}">
 
                         <div class="input-group mb-2 mr-sm-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Jumlah</div>
                             </div>
-                            <input type="text" class="form-control" name="jumlah">
+                            <input type="text" class="form-control" name="total">
                         </div>
 
                         <button type="submit" class="btn btn-success mb-2"><i class="fas fa-shopping-cart mr-2"></i>Pesan</button>
                     </form>
+                    @else
+                    <span>Ooops.. Kamu belum login, <a href="/login">yuk login dulu.</a></span>
+                    @endif
                 </div>
             </div>
         </div>

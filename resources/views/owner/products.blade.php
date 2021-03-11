@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="d-flex align-items-center justify-content-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Products') }}
+                {{ __('Produk') }}
             </h2>
             <button class="btn btn-primary" data-toggle="modal" data-target="#modal"><i class="fas fa-plus-circle mr-2"></i>Tambah Produk</button>
         </div>
@@ -21,8 +21,9 @@
                                 <div class="card">
                                     <img class="card-img-top" src="{{$product->photo}}" alt="Card image cap">
                                     <div class="card-body">
-                                        <h5 class="card-title"> {{$product->name}} </h5>
-                                        <p class="card-text"> {{$product->description}} </p>
+                                        <h5 class="card-title mb-0"> {{$product->name}} </h5>
+                                        <small class="bg-info text-white rounded px-1"> Rp. {{number_format($product->price)}} </small>
+                                        <p class="card-text mt-3"> {{$product->description}} </p>
                                         <a href="#" class="btn btn-danger btnDelete" data-id="{{$product->id}}">
                                             <i class="fas fa-eraser mr-2"></i>Hapus
                                         </a>
@@ -63,6 +64,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="price">Harga</label>
+                            <input type="number" name="price" class="form-control" id="price">
+                        </div>
+                        
+                        <div class="form-group">
                             <label for="description">Deskripsi Produk</label>
                             <textarea name="description" class="form-control" id="description" rows="3"></textarea>
                         </div>
@@ -86,6 +92,7 @@
             $.get( "/product/" + $(this).data('id'), function(data) {
                 $('#id').val(data.id);
                 $('#name').val(data.name);
+                $('#price').val(data.price);
                 $('#description').val(data.description);
             });
         }); 

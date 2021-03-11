@@ -7,6 +7,7 @@
                     <img class="card-img-top" src="{{$product->photo}}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title mb-0"> {{$product->name}} </h5>
+                        <small class="bg-info text-white rounded px-1"> Rp. {{number_format($product->price)}} </small><br>
                         <small> Oleh <span style="font-weight:600"> {{$product->owner->name}} </span> </small><br><br>
                         <p class="text-justify"> {{$product->description}} </p>
                         <div class="d-flex justify-content-between mt-3">

@@ -18,9 +18,8 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
-Route::get('/', function () {
-    return redirect('login');
-});
+Route::get('/', [CustomerController::class, 'index'])->name('buy');
+Route::get('/search', [CustomerController::class, 'search']);
 
 Route::get('/dashboard', function () {
     if(auth()->user()->hasRole('admin')) {
@@ -42,10 +41,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:customer']], function () {
-    Route::get('/buy', [CustomerController::class, 'index'])->name('buy');
-    Route::get('/search', [CustomerController::class, 'search']);
+    Route::get('/cart', [CustomerController::class, 'cart'])->name('cart');
+    Route::get('/history', [CustomerController::class, 'history'])->name('history');
+    Route::post('/cart', [CustomerController::class, 'moveToCart']);
     Route::post('/buy', [CustomerController::class, 'buy']);
-    Route::get('/riwayat', [CustomerController::class, 'riwayat'])->name('riwayat');
 });
 
 Route::group(['middleware' => ['auth', 'role:owner']], function () {

@@ -15,7 +15,7 @@ class OwnerController extends Controller
     } 
     
     protected function orders() {
-        $products = Order::with('product')->get();
+        $products = Order::where('in_cart', 0)->with('product')->get();
         
         $orders = [];
 
@@ -38,6 +38,7 @@ class OwnerController extends Controller
         if(is_null($request->photo)) {        
             Product::where('id', $request->id)->update([
                 'name' => $request->name,
+                'price' => $request->price,
                 'description' => $request->description,
             ]);
             toast('Berhasil mengedit produk', 'success');
@@ -53,6 +54,7 @@ class OwnerController extends Controller
                 [
                     'owner_id' => $ownerId,
                     'name' => $request->name,
+                    'price' => $request->price,
                     'description' => $request->description,
                     'photo' => '/images/products/'.$photo
                 ]

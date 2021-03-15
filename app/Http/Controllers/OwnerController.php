@@ -49,6 +49,10 @@ class OwnerController extends Controller
             $photo = $ownerId.'-'.time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path().'/images/products/', $photo);
 
+            if($id) {
+                File::delete(public_path() . Product::find($id)->photo);
+            }
+
             Product::updateOrCreate(
                 ['id' => $request->id],
                 [
@@ -60,18 +64,9 @@ class OwnerController extends Controller
                 ]
             );
 
-            if($id) {
-                File::delete(public_path() . Product::find($id)->photo);
-                toast('Berhasil mengedit produk', 'success');
-            } else {
-                toast('Berhasil menambahkan produk', 'success');
-            }
+            toast('Data berhasil disimpan', 'success');
         }
         return redirect('/products');
-    }
-
-    protected function show($id) {
-        return response()->json(Product::find($id));
     }
 
     protected function destroy($id) {

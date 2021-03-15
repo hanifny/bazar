@@ -45931,7 +45931,7 @@ input::placeholder, textarea::placeholder {
   }
 
   .sm\:pt-0 {
-    padding-top: 0px;
+    /* padding-top: 0px; */
   }
 
   .sm\:pr-0 {

@@ -22,7 +22,7 @@ class CustomerController extends Controller
             }
         }
 
-        return view('customer.buy', compact('products'));
+        return view('home', compact('products'));
     }
 
     protected function moveToCart(Request $request) {
@@ -48,6 +48,7 @@ class CustomerController extends Controller
 
     protected function history() {
         $carts = Order::orderBy('updated_at', 'desc')
+                ->where('customer_id', Auth::user()->id)
                 ->select('cart')
                 ->get()
                 ->unique('cart')
@@ -75,6 +76,6 @@ class CustomerController extends Controller
     protected function search(Request $request) {
         $products = Product::with('owner')->where('name', 'like', '%' . $request->text . '%' )->paginate(16);
 
-        return view('customer.load', compact('products'))->render();
+        return view('components.products', compact('products'))->render();
     }
 }

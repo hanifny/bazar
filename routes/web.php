@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::post('sign-in', LoginController::class)->name('sign-in');
+Route::get('/product/{id}', [ProductController::class, 'show']);
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('/approve/{id}', [AdminController::class, 'approve']);
@@ -50,7 +52,7 @@ Route::group(['middleware' => ['auth', 'role:customer']], function () {
 Route::group(['middleware' => ['auth', 'role:owner']], function () {
     Route::get('/orders', [OwnerController::class, 'orders'])->name('orders');
     Route::get('/products', [OwnerController::class, 'products'])->name('products');
-    Route::get('/product/{id}', [OwnerController::class, 'show']);
+    // Route::get('/product/{id}', [OwnerController::class, 'show']);
     Route::post('/product', [OwnerController::class, 'store']);
     Route::delete('/product/{id}', [OwnerController::class, 'destroy']);
 });

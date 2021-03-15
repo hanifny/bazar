@@ -14,29 +14,33 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="row">
 
-                    @if(!empty(count($products)))
+                        @if(!empty(count($products)))
                         <span> Menampilkan total {{$count}} produk </span>
                         @foreach($products as $product)
-                            <div class="col-md-3 col-sm-6 mt-4">
-                                <div class="card">
-                                    <img class="card-img-top" src="{{$product->photo}}" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title mb-0"> {{$product->name}} </h5>
-                                        <small class="bg-info text-white rounded px-1"> Rp. {{number_format($product->price)}} </small>
-                                        <p class="card-text mt-3"> {{$product->description}} </p>
-                                        <a href="#" class="btn btn-danger btnDelete" data-id="{{$product->id}}">
+                        <div class="col-md-3 col-sm-6 mt-4">
+                            <div class="card">
+                                <img class="card-img-top" src="{{$product->photo}}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0"> {{$product->name}} </h5>
+                                    <small class="bg-info text-white rounded px-1"> Rp. {{number_format($product->price)}} </small>
+                                    <p class="card-text mt-3"> {{$product->description}} </p>
+                                    <form method="POST" action="/product/{{$product->id}}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btnDelete">
                                             <i class="fas fa-eraser mr-2"></i>Hapus
-                                        </a>
-                                        <a href="#" class="btn btn-warning btnEdit" data-id="{{$product->id}}">
-                                            <i class="fas fa-marker mr-2"></i>Edit
-                                        </a>
-                                    </div>
+                                        </button>
+                                    </form>
+                                    <a href="#" class="btn btn-warning btnEdit" data-id="{{$product->id}}">
+                                        <i class="fas fa-marker mr-2"></i>Edit
+                                    </a>
                                 </div>
                             </div>
+                        </div>
                         @endforeach
-                    @else
+                        @else
                         <span>Kamu belum memiliki produk, silahkan ditambahkan.</span>
-                    @endif
+                        @endif
 
                     </div>
                 </div>
@@ -60,17 +64,17 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label for="name">Nama Produk</label>
-                            <input type="text" name="name" class="form-control" id="name">
+                            <input required type="text" name="name" class="form-control" id="name">
                         </div>
 
                         <div class="form-group">
                             <label for="price">Harga</label>
-                            <input type="number" name="price" class="form-control" id="price">
+                            <input required type="number" name="price" class="form-control" id="price">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="description">Deskripsi Produk</label>
-                            <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+                            <textarea required name="description" class="form-control" id="description" rows="3"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -87,37 +91,22 @@
 
     @push('scripts')
     <script>
-        $('.btnEdit').on('click', function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        $('.btnEdit').on('click', function () {
             $('#modal').modal('show');
-            $.get( "/product/" + $(this).data('id'), function(data) {
+            $.get("/product/" + $(this).data('id'), function (data) {
                 $('#id').val(data.id);
                 $('#name').val(data.name);
                 $('#price').val(data.price);
                 $('#description').val(data.description);
             });
-        }); 
+        });
 
-        $('.btnDelete').on('click', function() {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Produk ini akan Anda hapus?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        data: {_method: 'DELETE'},
-                        url: '/product/' + $(this).data('id'),
-                        type: 'POST',
-                    });
-                    location.reload();
-                }
-            });
-        }); 
     </script>
     @endpush
 </x-app-layout>

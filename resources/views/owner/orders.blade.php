@@ -35,10 +35,6 @@
                         </tr>
                         @endforeach
                     </table>
-                    @if(empty($orders))
-                    <span> Belum ada pesanan </span>
-                    <hr>
-                    @endif
                 </div>
             </div>
         </div>

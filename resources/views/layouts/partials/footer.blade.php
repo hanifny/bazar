@@ -51,9 +51,9 @@
                         <div class="contact">
                             <ul>
                                 <li>NO. 9 - Arjuna Utara.</li>
-                                <li>Indonesia.</li>
+                                <li>Jakarta Barat. Indonesia.</li>
                                 <li>www.persariraharja.org</li>
-                                <li>+62</li>
+                                <li>+62 (99) 99</li>
                             </ul>
                         </div>
                         <!-- End Single Widget -->

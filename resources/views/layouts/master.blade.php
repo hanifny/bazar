@@ -57,7 +57,6 @@
 	<!-- End Preloader -->
 
     @include('layouts.partials.header')
-    @include('layouts.partials.slider')
     @yield('content')
     @include('layouts.partials.footer')
 
@@ -94,5 +93,6 @@
 	<!-- Active JS -->
 	<script src="{{asset('bazar/js/active.js')}}"></script>
     @stack('scripts')
+	@include('sweetalert::alert')
 </body>
 </html>

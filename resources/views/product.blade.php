@@ -1,59 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-@include('layouts.partials.slider')
-
-<!-- Informasi  -->
-<section class="shop-blog section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title">
-                    <h2>Informasi</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog  -->
-                <div class="shop-single-blog">
-                    <img src="https://via.placeholder.com/370x300" alt="#">
-                    <div class="content">
-                        <p class="date">22 July , 2020. Monday</p>
-                        <a href="#" class="title">Sed adipiscing ornare.</a>
-                        <a href="#" class="more-btn">Continue Reading</a>
-                    </div>
-                </div>
-                <!-- End Single Blog  -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog  -->
-                <div class="shop-single-blog">
-                    <img src="https://via.placeholder.com/370x300" alt="#">
-                    <div class="content">
-                        <p class="date">22 July, 2020. Monday</p>
-                        <a href="#" class="title">Man’s Fashion Winter Sale</a>
-                        <a href="#" class="more-btn">Continue Reading</a>
-                    </div>
-                </div>
-                <!-- End Single Blog  -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog  -->
-                <div class="shop-single-blog">
-                    <img src="https://via.placeholder.com/370x300" alt="#">
-                    <div class="content">
-                        <p class="date">22 July, 2020. Monday</p>
-                        <a href="#" class="title">Women Fashion Festive</a>
-                        <a href="#" class="more-btn">Continue Reading</a>
-                    </div>
-                </div>
-                <!-- End Single Blog  -->
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Informasi  -->
 
 <!-- Start Product Area -->
 <div class="product-area section pt-0" id="products">
@@ -61,7 +8,19 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Beli Produk</h2>
+                    <h2 style="margin-top: 75px">Beli Produk</h2>
+                </div>
+            </div>
+        </div>
+        <div class="searchh header shop">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-12">
+                    <div class="search-bar-top">
+                        <div class="search-bar">
+                            <input name="name" placeholder="Cari produk disini....." type="search" id="searchText">
+                            <button type="button" id="btnSearch" class="btnn text-white" style="background:#b4aee8"><i class="ti-search"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,7 +42,6 @@
     </div>
 </div>
 <!-- End Product Area -->
-
 
 <!-- Modal -->
 <div class="modal fade" id="productDetail" tabindex="-1" role="dialog">
@@ -111,7 +69,7 @@
 
                             <div class="button" style="margin-top:30px;">
                                 @if(auth()->check())
-                                <button type="submit" class="btn" style="color:#fff;background:rgb(166, 77, 121);padding: 18px 32px;">Pesan</button>                                
+                                <button type="submit" class="btn" style="color:#fff;background:rgb(166, 77, 121);padding: 18px 32px;">Pesan</button>
                                 @else
                                 <a href="/login" class="btn" style="color:#fff;background:rgb(166, 77, 121)">Pesan</a>
                                 @endif

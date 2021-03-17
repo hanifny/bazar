@@ -1,46 +1,29 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OwnerController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+require __DIR__.'/auth.php';
 
 Route::post('sign-in', LoginController::class)->name('sign-in');
 Route::get('/', HomeController::class)->name('buy');
 Route::get('/search', [ProductController::class, 'search']);
-Route::get('/product', [ProductController::class, 'index']);
+Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::get('/product/{id}', [ProductController::class, 'show']);
-
-Route::get('/dashboard', function () {
-    if(auth()->user()->hasRole('admin')) {
-        $needApprovalUsers = User::doesntHave('roles')->get();
-        return view('admin.dashboard', compact('needApprovalUsers'));
-    } elseif(auth()->user()->hasRole('customer')) {
-        return redirect('/buy');
-    } elseif(auth()->user()->hasRole('owner')) {
-        return redirect('/orders');
-    }
-})->name('dashboard');
-
-require __DIR__.'/auth.php';
+Route::get('/information', [AdminController::class, 'indexInfo'])->name('information');
+Route::get('/information/{id}', [AdminController::class, 'showInfo']);
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('/approve/{id}', [AdminController::class, 'approve']);
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/information-adm', [AdminController::class, 'information'])->name('information-adm');
+    Route::post('/information', [AdminController::class, 'storeInfo']);
+    Route::get('/get-information/{id}', [AdminController::class, 'getInfo']);
+    Route::delete('/information/{id}', [AdminController::class, 'destroyInfo']);
 });
 
 Route::group(['middleware' => ['auth']], function () {

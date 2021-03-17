@@ -14,42 +14,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-12">
+            @foreach($posts as $post)
+            <div class="col-lg-3 col-md-4 col-12">
                 <!-- Start Single Blog  -->
                 <div class="shop-single-blog">
-                    <img src="https://via.placeholder.com/370x300" alt="#">
+                    <img src="{{$post->photo}}" alt="#">
                     <div class="content">
-                        <p class="date">22 July , 2020. Monday</p>
-                        <a href="#" class="title">Sed adipiscing ornare.</a>
-                        <a href="#" class="more-btn">Continue Reading</a>
+                        <p class="date"> {{date('d M Y', strtotime($post->created_at))}} </p>
+                        <a href="/information/{{$post->id}}" class="title">{{$post->title}}</a>
+                        <a href="/information/{{$post->id}}" class="more-btn">Lanjutkan membaca</a>
                     </div>
                 </div>
                 <!-- End Single Blog  -->
             </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog  -->
-                <div class="shop-single-blog">
-                    <img src="https://via.placeholder.com/370x300" alt="#">
-                    <div class="content">
-                        <p class="date">22 July, 2020. Monday</p>
-                        <a href="#" class="title">Man’s Fashion Winter Sale</a>
-                        <a href="#" class="more-btn">Continue Reading</a>
-                    </div>
-                </div>
-                <!-- End Single Blog  -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog  -->
-                <div class="shop-single-blog">
-                    <img src="https://via.placeholder.com/370x300" alt="#">
-                    <div class="content">
-                        <p class="date">22 July, 2020. Monday</p>
-                        <a href="#" class="title">Women Fashion Festive</a>
-                        <a href="#" class="more-btn">Continue Reading</a>
-                    </div>
-                </div>
-                <!-- End Single Blog  -->
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -100,7 +78,8 @@
                         <img src="" alt="" style="margin-top: 20px;" id="productImg">
                     </div>
                     <div class="col-lg-8 col-8">
-                        <p style="display:block; margin-top:99px; color:#000000; font-size:14px; font-weight:400;" id="productDesc"></p>
+                        <h5 style="margin-top:79px; color:#333; font-size:14px;" id="productOwner"></h5>
+                        <p style="display:block; margin-top:20px; color:#000000; font-size:14px; font-weight:400;" id="productDesc"></p>
                         <h3 style="font-size:21px;color:#333;margin-top:20px;" id="productPrice"></h3>
                         <form action="/cart" method="POST" class="form-inline">
                             @csrf
@@ -111,7 +90,7 @@
 
                             <div class="button" style="margin-top:30px;">
                                 @if(auth()->check())
-                                <button type="submit" class="btn" style="color:#fff;background:rgb(166, 77, 121);padding: 18px 32px;">Pesan</button>                                
+                                <button type="submit" class="btn" style="color:#fff;background:rgb(166, 77, 121);padding: 18px 32px;">Pesan</button>
                                 @else
                                 <a href="/login" class="btn" style="color:#fff;background:rgb(166, 77, 121)">Pesan</a>
                                 @endif
@@ -151,6 +130,7 @@
     $('body').on('click', '.detailModal', function () {
         let id = $(this).data('id');
         $.get("/product/" + id, function (data) {
+            $('#productOwner').html('Oleh : ' + data.owner.name);
             $('#productName').html(data.name);
             $('#productPrice').html('Rp. ' + formatter.format(data.price));
             $('#productDesc').html(data.description);

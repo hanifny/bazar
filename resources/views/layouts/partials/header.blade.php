@@ -46,7 +46,7 @@
             <div class="cat-nav-head">
                 <div class="row">
 
-                    <div class="col-lg-9 col-12">
+                    <div class="col-lg-8 col-12">
                         <div class="menu-area">
                             <!-- Main Menu -->
                             <nav class="navbar navbar-expand-lg">
@@ -56,7 +56,7 @@
 											<li style="display: flex;flex-direction: row;align-items: center;"><img src="{{asset('bazar/images/logo.svg')}}" alt="logo" width="45px"></li>
                                             <li class="{{ request()->is('/') ? 'active' : '' }} "><a href="/">Home</a></li>
                                             <li class="{{ request()->is('product') ? 'active' : '' }} "><a href="/product">Produk</a></li>
-                                            <li><a href="/information">Informasi</a></li>
+                                            <li class="{{ request()->is('information') ? 'active' : '' }} "><a href="/information">Informasi</a></li>
                                             <!-- <li><a href="/contact">Kontak Kami</a></li> -->
                                         </ul>
                                     </div>
@@ -65,9 +65,19 @@
                             <!--/ End Main Menu -->
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-12">
+                    <div class="col-lg-4 col-md-4 col-12">
                         <div class="right-bar">
                             <div class="sinlge-bar shopping">
+                                @if(auth()->check())
+                                @if(auth()->user()->hasRole('admin'))
+                                <a href="dashboard" class="text-white single-icon"><small>Admin</small><i class="ml-2 ti-user"></i> </a>
+                                <span class="mx-2">|</span>                                
+                                @elseif(auth()->user()->hasRole('owner'))
+                                <a href="dashboard" class="text-white single-icon"><small>Kelola</small><i class="ml-2 ti-settings"></i> </a>
+                                <span class="mx-2">|</span>
+                                @endif
+                                @endif
+
                                 @if(!auth()->check())
                                 <a title="Login" href="/login" class="text-white single-icon"><small>Keranjangku</small><i class="ml-2 ti-bag"></i> <span class="total-count">1</span></a>
                                 @else

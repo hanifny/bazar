@@ -56,7 +56,7 @@
                                 <td></td>
                             </tr>
                             <tr class="text-right">
-                                <td style="border: none; padding-bottom: 0" colspan="6"><button type="submit" class="btnn">Lanjut</button></td>
+                                <td style="border: none; padding-bottom: 0" colspan="6"><button type="submit" class="btn text-dark" style="background: greenyellow;">Lanjut</button></td>
                             </tr>
                             @else
                             <tr class="text-center">

@@ -18,6 +18,16 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('information-adm')" :active="request()->routeIs('information-adm')">
+                        {{ __('Informasi') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('product')">
+                        {{ __('Belanja') }}
+                    </x-nav-link>
+                </div>
                 @elseif(auth()->user()->hasRole('owner'))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('orders')" :active="request()->routeIs('orders')">
@@ -29,16 +39,9 @@
                         {{ __('Produk') }}
                     </x-nav-link>
                 </div>
-                @elseif(auth()->user()->hasRole('customer'))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('buy')" :active="request()->routeIs('buy')">
-                        {{ __('Beli Produk') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('cart')" :active="request()->routeIs('cart')">
-                        {{ __('Keranjang') }} <span class="badge badge-pill badge-primary ml-1"><small>  {{\App\Models\Order::where(['customer_id' => auth()->user()->id, 'in_cart' => 1])->count()}} </small></span>
-                    </x-nav-link>
-                    <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
-                        {{ __('Riwayat') }}
+                    <x-nav-link :href="route('product')">
+                        {{ __('Belanja') }}
                     </x-nav-link>
                 </div>
                 @endif

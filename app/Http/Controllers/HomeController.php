@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -15,14 +16,9 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $products = Product::with('owner')->paginate(16);
+        $products = Product::with('owner')->orderBy('created_at', 'desc')->paginate(16);
+        $posts = Post::offset(0)->limit(6)->orderBy('created_at', 'desc')->get();
 
-        if(isset(auth()->user()->id)) {
-            if(auth()->user()->hasRole('admin')) {
-                return redirect('/dashboard');
-            }
-        }
-
-        return view('home', compact('products'));
+        return view('home', compact('products', 'posts'));
     }
 }

@@ -13,14 +13,18 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
+    protected function userId() {
+        return Auth::user()->id;
+    }
+    
     protected function index() {
-        $products = Product::with('owner')->paginate(44);
+        $products = Product::with('owner')->where('owner_id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(44);
 
         return view('product', compact('products'));
     }
 
     protected function show($id) {
-        return response()->json(Product::find($id));
+        return response()->json(Product::with('owner')->find($id));
     }
 
     protected function search(Request $request) {

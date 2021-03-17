@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Produk') }}
             </h2>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal"><i class="fas fa-plus-circle mr-2"></i>Tambah Produk</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal" id="btnAdd"><i class="fas fa-plus-circle mr-2"></i>Tambah Produk</button>
         </div>
     </x-slot>
 
@@ -13,10 +13,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="row">
-
                         @if(!empty(count($products)))
-                        <span> Menampilkan total {{$count}} produk </span>
+                        <div class="col-md-12 col-sm-12">
+                            <span> Menampilkan total {{$count}} produk </span>
+                        </div>
                         @foreach($products as $product)
+
                         <div class="col-md-3 col-sm-6 mt-4">
                             <div class="card">
                                 <img class="card-img-top" src="{{$product->photo}}" alt="Card image cap">
@@ -24,7 +26,7 @@
                                     <h5 class="card-title mb-0"> {{$product->name}} </h5>
                                     <small class="bg-info text-white rounded px-1"> Rp. {{number_format($product->price)}} </small>
                                     <p class="card-text mt-3"> {{$product->description}} </p>
-                                    <form method="POST" action="/product/{{$product->id}}">
+                                    <form method="POST" action="/product/{{$product->id}}" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btnDelete">
@@ -53,7 +55,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Tambah Produk</h5>
+                    <h5 class="modal-title" id="modalLabel"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -70,6 +72,11 @@
                         <div class="form-group">
                             <label for="price">Harga</label>
                             <input required type="number" name="price" class="form-control" id="price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="link">Link Alternatif</label>
+                            <input type="text" name="link" class="form-control" id="link">
                         </div>
 
                         <div class="form-group">
@@ -96,14 +103,23 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        
+
+        $('#btnAdd').on('click', function () {
+            $('#modal').modal('show');
+            $('#modalLabel').html('Tambah Data Produk');
+            $('#id').val('');
+            $('#form').trigger("reset"); // mereset semua input yang ada di form
+        });
+
         $('.btnEdit').on('click', function () {
             $('#modal').modal('show');
             $.get("/product/" + $(this).data('id'), function (data) {
                 $('#id').val(data.id);
                 $('#name').val(data.name);
                 $('#price').val(data.price);
+                $('#link').val(data.link);
                 $('#description').val(data.description);
+                $('#modalLabel').html('Edit Data Produk');
             });
         });
 

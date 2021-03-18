@@ -73,7 +73,7 @@
                                 <a href="dashboard" class="text-white single-icon"><small>Admin</small><i class="ml-2 ti-user"></i> </a>
                                 <span class="mx-2">|</span>                                
                                 @elseif(auth()->user()->hasRole('owner'))
-                                <a href="dashboard" class="text-white single-icon"><small>Kelola</small><i class="ml-2 ti-settings"></i> </a>
+                                <a href="orders" class="text-white single-icon"><small>Kelola</small><i class="ml-2 ti-settings"></i> </a>
                                 <span class="mx-2">|</span>
                                 @endif
                                 @endif

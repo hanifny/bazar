@@ -16,8 +16,13 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $products = Product::with('owner')->orderBy('created_at', 'desc')->paginate(16);
-        $posts = Post::offset(0)->limit(6)->orderBy('created_at', 'desc')->get();
+        if(auth()->check()) {
+            $products = Product::with('owner')->where('owner_id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(16);
+        } else {
+            $products = Product::with('owner')->orderBy('created_at', 'desc')->paginate(16);
+        }
+        
+        $posts = Post::offset(0)->limit(8)->orderBy('created_at', 'desc')->get();
 
         return view('home', compact('products', 'posts'));
     }

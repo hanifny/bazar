@@ -39,6 +39,7 @@ class OwnerController extends Controller
             Product::where('id', $request->id)->update([
                 'name' => $request->name,
                 'price' => $request->price,
+                'link' => $request->link,
                 'description' => $request->description,
             ]);
             toast('Berhasil mengedit produk', 'success');
@@ -58,6 +59,7 @@ class OwnerController extends Controller
                 [
                     'owner_id' => $ownerId,
                     'name' => $request->name,
+                    'link' => $request->link,
                     'price' => $request->price,
                     'description' => $request->description,
                     'photo' => '/images/products/'.$photo

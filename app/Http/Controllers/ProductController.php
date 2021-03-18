@@ -18,7 +18,11 @@ class ProductController extends Controller
     }
     
     protected function index() {
-        $products = Product::with('owner')->where('owner_id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(44);
+        if(auth()->check()) {
+            $products = Product::with('owner')->where('owner_id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(44);
+        } else {
+            $products = Product::with('owner')->orderBy('created_at', 'desc')->paginate(44);
+        }
 
         return view('product', compact('products'));
     }

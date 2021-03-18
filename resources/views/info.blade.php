@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Informasi  -->
-<section class="product-area section pt-0">
+<section class="shop-blog section pt-0">
     <div class="container">
         <div class="row">
             <div class="col-12">
